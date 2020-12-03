@@ -14,13 +14,17 @@ def Move(currentPos, step):
 def CalculateHazards(position, step):
     counter = 0
 
+    #While the vertical position is less than the length of the map, step through it
     while position[1] < mapDimensions[1] - 1:
         position = Move(position, step)
 
         x = position[0]
         y = position[1]
 
+        #Define map position and make it easier to read
         mapPos = inputList[y][x]
+
+        #If the position we're in at the moment is a hazard, add to the hazard counter
         if mapPos == hazardSymbol:
             counter += 1
     
