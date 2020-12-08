@@ -1,26 +1,9 @@
-def GetRow_BinaryTree(currRange, id, idIndex):
-    #Define the new position in the range as the mid point
-    rangeMid = round((currRange[0] + currRange[1])/2)
-
-    #try to get the next character in the id
-    try:
-        char = id[idIndex]
-    #If we get an index error then we've reached the end of the string so return out current position
-    #(at the end of the string, out position will be the final row number)
-    except IndexError:
-        #Return the seat number all the way back up the chain
-        return rangeMid
-
-    #If the current character is a B then the current position becomes the minimum of the range
-    if char == "B" or char == "R":
-        currRange[0] = rangeMid
-    #Else (if it's an F) our position becomes the maximum of the range
-    else:
-        currRange[1] = rangeMid
-    
-    #We have a new range so we go around again with the next character
-    #currRange = []
-    return GetRow_BinaryTree(currRange, id, idIndex + 1)
+def SeatToBin(seat):
+    seat_1Fs = seat.replace("F", "0")
+    seat_1Ls = seat_1Fs.replace("L", "0")
+    seat_0Bs = seat_1Ls.replace("B", "1")
+    seat_0Rs = seat_0Bs.replace("R", "1")
+    return seat_0Rs
 
 seatIds = []
 
@@ -29,9 +12,7 @@ inputList = inputFile.read().splitlines()
 
 #For each line, get the row number and seat number
 for line in inputList:
-    thisSeat = []
-    thisSeat.append(GetRow_BinaryTree([0, 127], line[0:7], 0))
-    thisSeat.append(GetRow_BinaryTree([0,7], line[7:10], 0))
-    seatIds.append( (thisSeat[0] * 8) + thisSeat[1] )
+    id = (int(SeatToBin(line[0:7]), 2)*8) + int(SeatToBin(line[7:10]),2)
+    seatIds.append(id)
 
 print(max(seatIds))
